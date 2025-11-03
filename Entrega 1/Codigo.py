@@ -94,6 +94,7 @@ class Personaje:
             print(f"  -> {o}: nivel {n} -> {n*100} poder")
         print()
 
+# Ejemplo de uso:
 
 goku = Personaje("Goku", "Saiyajin", "Vegita", 7)
 
@@ -105,4 +106,5 @@ goku.agregar_habilidad("Kamehameha", 5)   # Existe en 4 Sube a 5
 goku.agregar_habilidad("Genki Dama", 1)   # Se agrega
 # Agregar Objetos
 goku.agregar_objeto("Semilla del hermitaño", 1)
+
 goku.mostrar()
