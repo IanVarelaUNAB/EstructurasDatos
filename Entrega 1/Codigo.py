@@ -1,5 +1,8 @@
 class Personaje:
     def __init__(self, nombre, especie, planeta, nivel_personaje):
+         if nivel_personaje < 1 or nivel_personaje > 10:
+            raise ValueError("El nivel del personaje debe ser entre 1 y 10") 
+             
         self.nombre = nombre
         self.especie = especie
         self.planeta = planeta
@@ -46,7 +49,7 @@ class Personaje:
                 return
         print(f"No se encontró {nombre_hab}")
 
-    # Objetso
+    # Objetos
     def agregar_objeto(self, nombre_obj, nivel):
         if nivel < 1 or nivel > 5:
             print("Nivel de objeto debe ser 1-5")
@@ -61,6 +64,7 @@ class Personaje:
                 print(f"Objeto {nombre_obj} eliminado")
                 return
         print(f"No se encontró {nombre_obj}")
+
 
     # Poder
 
@@ -80,7 +84,9 @@ class Personaje:
         base = self.poder_objetos() + self.poder_habilidades()
         return base * self.nivel_personaje
 
+
     # Mostrar todo
+
     def mostrar(self):
         print(f"--- {self.nombre} ---")
         print(f"Especie: {self.especie} | Planeta: {self.planeta}")
@@ -108,3 +114,4 @@ goku.agregar_habilidad("Genki Dama", 1)   # Se agrega
 goku.agregar_objeto("Semilla del hermitaño", 1)
 
 goku.mostrar()
+
