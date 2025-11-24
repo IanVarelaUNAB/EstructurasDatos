@@ -1,3 +1,6 @@
+import csv
+
+
 class Personaje:
     def __init__(self, nombre, especie, planeta, nivel_personaje):
          if nivel_personaje < 1 or nivel_personaje > 10:
@@ -28,7 +31,7 @@ class Personaje:
                     self.habilidades[i] = (hab, nuevo_niv)
                     print(f"{nombre_hab} subió a nivel {nuevo_niv}")
                     return
-                else:
+                
                     # Si es diferente nivel se queda con el mayor
                     if nivel > niv_actual:
                         self.habilidades[i] = (hab, nivel)
@@ -67,7 +70,6 @@ class Personaje:
 
 
     # Poder
-
     def poder_objetos(self):
         total = 0
         for _, nivel in self.inventario:
@@ -86,7 +88,6 @@ class Personaje:
 
 
     # Mostrar todo
-
     def mostrar(self):
         print(f"--- {self.nombre} ---")
         print(f"Especie: {self.especie} | Planeta: {self.planeta}")
@@ -100,18 +101,79 @@ class Personaje:
             print(f"  -> {o}: nivel {n} -> {n*100} poder")
         print()
 
-# Ejemplo de uso:
+    # CSV
+   def cargar_personajes(ruta="Personajes.csv"):
+    personajes = {}
+    with open(ruta, encoding="utf-8") as file:
+        lector = csv.DictReader(file)
+        for fila in lector:
+            nombre = fila["nombre"]
+            especie = fila["especie"]
+            planeta = fila["planeta"]
+            nivel = int(fila["nivel_personaje"])
+            personajes[nombre] = Personaje(nombre, especie, planeta, nivel)
+    return personajes
 
-goku = Personaje("Goku", "Saiyajin", "Vegita", 7)
 
-# Agregar habilidades
-goku.agregar_habilidad("Kamehameha", 3)   # Se agrega
-goku.agregar_habilidad("Kamehameha", 3)   # Sube a 4
-goku.agregar_habilidad("Kamehameha", 2)   # Existe en 4, nada cambia
-goku.agregar_habilidad("Kamehameha", 5)   # Existe en 4 Sube a 5
-goku.agregar_habilidad("Genki Dama", 1)   # Se agrega
-# Agregar Objetos
-goku.agregar_objeto("Semilla del hermitaño", 1)
+   def cargar_habilidades(personajes, ruta="Habilidades.csv"):
+     with open(ruta, encoding="utf-8") as file:
+        lector = csv.DictReader(file)
+        for fila in lector:
+            personaje = fila["personaje"]
+            hab = fila["habilidad"]
+            nivel = int(fila["nivel"])
+            if personaje in personajes:
+                personajes[personaje].agregar_habilidad(hab, nivel)
 
-goku.mostrar()
+
+    def cargar_inventario(personajes, ruta="Inventario.csv"):
+      with open(ruta, encoding="utf-8") as file:
+        lector = csv.DictReader(file)
+        for fila in lector:
+            personaje = fila["personaje"]
+            obj = fila["objeto"]
+            nivel = int(fila["nivel"])
+            if personaje in personajes:
+                personajes[personaje].agregar_objeto(obj, nivel)
+
+
+   def cargar_universo(ruta="universo_planetas.csv"):
+        universo = {}
+      with open(ruta, encoding="utf-8") as file:
+        lector = csv.DictReader(file)
+        for fila in lector:
+            origen = fila["origen"]
+            destino = fila["destino"]
+            distancia = int(fila["distancia"])
+
+            if origen not in universo:
+                universo[origen] = []
+            if destino not in universo:
+                universo[destino] = []
+
+            universo[origen].append((destino, distancia))
+            universo[destino].append((origen, distancia))
+
+    return universo
+
+# MAIN
+if __name__ == "__main__":
+    print("\n=== CARGANDO PERSONAJES DESDE CSV ===\n")
+
+    personajes = cargar_personajes()
+    cargar_habilidades(personajes)
+    cargar_inventario(personajes)
+    universo = cargar_universo()
+
+    print("=== PERSONAJES CARGADOS ===\n")
+    for p in personajes.values():
+        p.mostrar()
+
+    print("=== UNIVERSO DE PLANETAS ===\n")
+    for origen, conexiones in universo.items():
+        print(f"{origen}: {conexiones}")
+
+
+
+
 
