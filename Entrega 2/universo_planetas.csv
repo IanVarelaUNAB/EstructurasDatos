@@ -1,0 +1,9 @@
+origen,destino,distancia
+Tierra,Namek,9000
+Tierra,Planeta Vegeta,12000
+Tierra,Planeta Bills,30000
+Namek,Planeta 79,5000
+Planeta Vegeta,Planeta Vampa,7000
+Planeta Vegeta,Planeta Bills,15000
+Planeta Vampa,Planeta 79,9000
+Planeta Bills,Planeta 79,20000
