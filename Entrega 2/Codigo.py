@@ -1,6 +1,7 @@
 # =============================================
 # ENTREGA 2: Árboles y Jerarquías
 # =============================================
+import csv
 
 class Personaje:
     def __init__(self, nombre, especie, planeta, nivel_personaje):
@@ -168,9 +169,73 @@ class ArsenalHabilidades:
         print(f"→ Total de líneas evolutivas: {len(self.arboles)}")
         print(f"{'='*60}")
 
+# CSV
+def cargar_personajes_csv(ruta):
+    personajes = {}
+    with open(ruta, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for fila in reader:
+            nombre = fila["Nombre"]
+            especie = fila["Especie"]
+            planeta = fila["Planeta"]
+            nivel = int(fila["Nivel"])
+            personajes[nombre] = Personaje(nombre, especie, planeta, nivel)
+    return personajes
+
+
+def cargar_habilidades_csv(personajes, ruta):
+    with open(ruta, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+
+        for fila in reader:
+            personaje = fila["Personaje"]
+            habilidad = fila["Habilidad"]
+            nivel = int(fila["Nivel"])
+            mejora = fila["Mejora"]
+            nivel_mej = fila["Nivel_Mejora"]
+
+            if personaje not in personajes:
+                continue
+                    nodo_base = personajes[personaje].nueva_habilidad(habilidad, nivel)
+            if mejora.strip():
+                nodo_base.agregar_mejora(mejora, int(nivel_mej))
+
+def cargar_inventario_csv(personajes, ruta):
+    with open(ruta, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for fila in reader:
+            pj = fila["Personaje"]
+            obj = fila["Objeto"]
+            nivel = int(fila["Nivel"])
+
+            if pj in personajes:
+                personajes[pj].inventario.append((obj, nivel))
+
+
+# ==================== MAIN ====================
+if __name__ == "__main__":
+    # carag de csv
+    personajes = cargar_personajes_csv("Personajes.csv")
+    cargar_habilidades_csv(personajes, "Habilidades.csv")
+    cargar_inventario_csv(personajes, "Inventario.csv")
+
+    # Arbol binario de poder
+    arbol = ArbolBinarioPoder()
+    for pj in personajes.values():
+        arbol.insertar(pj)
+
+    # Muestra arol binario
+    arbol.inorden()
+
+    # Arbol general de habilidades por personaje
+    for pj in personajes.values():
+        pj.arsenal.mostrar_todo()
+        print(f"Poder total final de {pj.nombre}: {pj.poder_total()}")
+        print("\n" + "="*60)
+
 
 # ============== Ejemplos ==============
-if __name__ == "__main__":
+'''if __name__ == "__main__":
     goku = Personaje("Goku", "Saiyajin", "Vegeta", 9)
     vegeta = Personaje("Vegeta", "Saiyajin", "Vegeta", 8)
     piccolo = Personaje("Piccolo", "Namekiano", "Namek", 6)
@@ -200,4 +265,5 @@ if __name__ == "__main__":
 
     # === Mostrar habilidades de Vegeta ===
     vegeta.arsenal.mostrar_todo()
-    print(f"\nPoder total final de {vegeta.nombre}: {vegeta.poder_total()}")
+
+    print(f"\nPoder total final de {vegeta.nombre}: {vegeta.poder_total()}") '''
