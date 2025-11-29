@@ -146,7 +146,9 @@ if __name__ == "__main__":
     universo.agregar_ruta("Tierra", "Marte")
     universo.agregar_ruta("Marte", "Jupiter")
     universo.agregar_ruta("Jupiter", "Saturno")
-    universo.agregar_ruta("Saturno", "Planeta X")
+    universo.agregar_ruta("Jupiter", "Planeta X")
+    universo.agregar_ruta("Planeta X", "Namek")
+    universo.agregar_ruta("Planeta X", "Planeta vegita")
     universo.agregar_ruta("Luna", "Estación Espacial")
     
     # DFS (Exploración)
@@ -154,4 +156,5 @@ if __name__ == "__main__":
 
     # BFS (Buscar camino)
     camino = universo.buscar_ruta_mas_corta_bfs("Tierra", "Saturno")
+
     print(f"\nCamino encontrado (BFS): {camino}")
